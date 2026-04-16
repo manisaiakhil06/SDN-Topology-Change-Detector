@@ -6,14 +6,14 @@
 
 ---
 
-## 👤 Student Details
+##  Student Details
 
 * **Name:** Nallamalli Kanaka Mani Sai Akhil
 * **SRN:** PES1UG24CS290
 
 ---
 
-## 📌 Problem Statement
+##  Problem Statement
 
 In traditional networks, detecting topology changes such as link failures or port status updates is difficult due to distributed control. Software Defined Networking (SDN) centralizes control, allowing dynamic detection and handling of topology changes using a controller.
 
@@ -21,7 +21,7 @@ In traditional networks, detecting topology changes such as link failures or por
 
 ---
 
-## 🎯 Objectives
+##  Objectives
 
 * Detect topology changes dynamically
 * Monitor switch and port events using OpenFlow
@@ -31,7 +31,7 @@ In traditional networks, detecting topology changes such as link failures or por
 
 ---
 
-## 🌐 Network Topology
+##  Network Topology
 
 ```
 h1 --- s1 --- s2 --- h3
@@ -45,7 +45,7 @@ h1 --- s1 --- s2 --- h3
 
 ---
 
-## ⚙️ SDN / OpenFlow Design
+##  SDN / OpenFlow Design
 
 ### Controller Logic
 
@@ -56,7 +56,7 @@ h1 --- s1 --- s2 --- h3
 
 ---
 
-## 📁 File Structure
+##  File Structure
 
 ```
 SDN-Topology-Change-Detector/
@@ -75,7 +75,7 @@ SDN-Topology-Change-Detector/
 
 ---
 
-## ⚙️ Setup & Execution
+##  Setup & Execution
 
 ### Step 1 — Install Mininet
 
@@ -147,7 +147,7 @@ h1 iperf -c h3 -t 20
 
 ---
 
-## 📊 Performance Analysis
+##  Performance Analysis
 
 * Latency verified using pingall (0% packet loss)
 * Throughput measured using iperf
@@ -156,7 +156,7 @@ h1 iperf -c h3 -t 20
 
 ---
 
-## 🔑 Key Concepts Demonstrated
+##  Key Concepts Demonstrated
 
 * OpenFlow controller–switch interaction
 * PacketIn event handling
@@ -166,17 +166,16 @@ h1 iperf -c h3 -t 20
 
 ---
 
-## 🚀 Conclusion
+##  Conclusion
 
 The system successfully demonstrates real-time topology change detection using OpenFlow PortStatus events. The controller dynamically updates network behavior, showcasing the flexibility and centralized control of SDN.
 
 ---
 
-## 📚 References
+##  References
 
-* https://mininet.org/walkthrough/
-* https://github.com/mininet/mininet
-* https://github.com/noxrepo/pox
-* https://opennetworking.org
+Mininet Documentation
+POX Controller Documentation
+OpenFlow Specification
 
 ---
