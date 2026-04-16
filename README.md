@@ -1,4 +1,8 @@
-# SDN Topology Change Detector using Mininet and POX
+# SDN-Based Topology Change Detection System
+
+**Course:** UE24CS252B — Computer Networks
+**Project:** SDN Topology Change Detector
+**Controller:** POX | **OpenFlow:** 1.0 | **Emulator:** Mininet
 
 ---
 
@@ -11,13 +15,15 @@
 
 ## 📌 Problem Statement
 
-In traditional networks, detecting and responding to topology changes such as link failures or switch disconnections is complex and inefficient. This project implements a Software Defined Networking (SDN) solution using Mininet and a POX controller to dynamically detect topology changes and update network behavior in real time.
+In traditional networks, detecting topology changes such as link failures or port status updates is difficult due to distributed control. Software Defined Networking (SDN) centralizes control, allowing dynamic detection and handling of topology changes using a controller.
+
+**Goal:** Detect topology changes (link/port events) in real-time and update network behavior accordingly.
 
 ---
 
 ## 🎯 Objectives
 
-* Detect network topology changes dynamically
+* Detect topology changes dynamically
 * Monitor switch and port events using OpenFlow
 * Implement match-action flow rules
 * Handle PacketIn events
@@ -25,13 +31,7 @@ In traditional networks, detecting and responding to topology changes such as li
 
 ---
 
-## 🧠 System Design
-
-### 🔹 Network Topology
-
-* Hosts: h1, h2, h3
-* Switches: s1, s2
-* Controller: POX
+## 🌐 Network Topology
 
 ```
 h1 --- s1 --- s2 --- h3
@@ -39,42 +39,45 @@ h1 --- s1 --- s2 --- h3
        h2
 ```
 
-### 🔹 Design Justification
-
-* Simple topology for clear observation
-* Multiple switches enable topology change detection
-* POX controller supports event-driven logic
+* Hosts: h1, h2, h3
+* Switches: s1, s2
+* Controller: POX
 
 ---
 
-## 💻 Source Code Structure
+## ⚙️ SDN / OpenFlow Design
+
+### Controller Logic
+
+* Switch connects → Controller logs connection
+* PacketIn event → Flood packet + install flow rule
+* Known flows → Forward using installed rule
+* PortStatus event → Detect topology change
+
+---
+
+## 📁 File Structure
 
 ```
 SDN-Topology-Change-Detector/
-│
 ├── topology/
 │   └── mytopo.py
-│
 ├── controller/
 │   └── topology_controller.py
-│
 ├── screenshots/
 │   ├── pingall.png
 │   ├── iperf.png
 │   ├── flow_table.png
+│   ├── controller_logs.png
 │   ├── topology_change.png
-│
 └── README.md
 ```
 
-✔ Clean and modular structure
-✔ Proper separation of components
-
 ---
 
-## ⚙️ Setup & Execution Steps
+## ⚙️ Setup & Execution
 
-### 🔹 Step 1: Install Mininet
+### Step 1 — Install Mininet
 
 ```bash
 sudo apt update
@@ -83,16 +86,16 @@ sudo apt install mininet -y
 
 ---
 
-### 🔹 Step 2: Run POX Controller
+### Step 2 — Run POX Controller
 
 ```bash
-cd pox
+cd ~/pox
 ./pox.py controller.topology_controller
 ```
 
 ---
 
-### 🔹 Step 3: Run Custom Topology
+### Step 3 — Run Mininet Topology
 
 ```bash
 sudo mn --custom topology/mytopo.py --topo mytopo --controller=remote
@@ -100,101 +103,80 @@ sudo mn --custom topology/mytopo.py --topo mytopo --controller=remote
 
 ---
 
-## 🧪 Test Cases
+## 🧪 Testing Commands
 
-### ✅ Test Case 1: Connectivity Test
-
-Command:
-
-```bash
-pingall
 ```
-
-Expected Output:
-
-* All hosts reachable
-* 0% packet loss
-
----
-
-### ✅ Test Case 2: Topology Change Detection
-
-Steps:
-
-* Disable a link or port
-
-Expected Output:
-
-* Controller logs:
-  **"Topology change detected on switch"**
+pingall
+sh ovs-ofctl dump-flows s1
+h1 ping -c 3 h2
+h3 iperf -s &
+h1 iperf -c h3 -t 20
+```
 
 ---
 
 ## 📸 Proof of Execution
 
-### 🔹 Ping Results
+### 🔹 Connectivity Test (pingall)
 
 ![Ping](screenshots/pingall.png)
 
 ---
 
-### 🔹 Iperf Results
+### 🔹 Throughput Test (iperf)
 
 ![Iperf](screenshots/iperf.png)
 
 ---
 
-### 🔹 Flow Table Output
+### 🔹 Flow Table (OpenFlow Rules)
 
 ![Flow Table](screenshots/flow_table.png)
 
 ---
 
+### 🔹 Controller Logs (Packet Handling)
+
+![Logs](screenshots/controller_logs.png)
+
+---
+
 ### 🔹 Topology Change Detection
 
-![Topology Change](screenshots/topology_change.png)
+![Topology](screenshots/topology_change.png)
 
 ---
 
 ## 📊 Performance Analysis
 
-* Latency measured using `pingall`
-* Throughput measured using `iperf`
-* Flow rules installed dynamically
-* Unknown packets are flooded initially and optimized later
+* Latency verified using pingall (0% packet loss)
+* Throughput measured using iperf
+* Flow rules dynamically installed in switch
+* Controller reduces load after rule installation
 
 ---
 
-## 🔍 Key Concepts Used
+## 🔑 Key Concepts Demonstrated
 
-* Software Defined Networking (SDN)
-* OpenFlow Protocol
-* PacketIn Event Handling
-* Flow Rule Installation (Match-Action)
-* Event-driven Controller
+* OpenFlow controller–switch interaction
+* PacketIn event handling
+* Flow rule installation (match-action)
+* PortStatus event for topology change detection
+* Dynamic SDN behavior
 
 ---
 
 ## 🚀 Conclusion
 
-The controller dynamically detects topology changes using OpenFlow PortStatus events and updates flow rules accordingly. This demonstrates the flexibility and control provided by SDN in managing dynamic networks.
-
----
-
-## 🔮 Future Improvements
-
-* Implement learning switch instead of flooding
-* Add firewall rules
-* Optimize flow rule installation
-* Add topology visualization
+The system successfully demonstrates real-time topology change detection using OpenFlow PortStatus events. The controller dynamically updates network behavior, showcasing the flexibility and centralized control of SDN.
 
 ---
 
 ## 📚 References
 
-1. https://mininet.org/overview/
-2. https://mininet.org/walkthrough/
-3. https://github.com/mininet/mininet
-4. https://github.com/noxrepo/pox
+* https://mininet.org/walkthrough/
+* https://github.com/mininet/mininet
+* https://github.com/noxrepo/pox
+* https://opennetworking.org
 
 ---
